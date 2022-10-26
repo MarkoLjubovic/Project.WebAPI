@@ -49,12 +49,24 @@ namespace Project.WebAPI.Controllers
         // PUT: api/VehicleModels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicleModel(ModelDto modelDto)
+        public async Task<IActionResult> PutVehicleModel(int id, ModelDto modelDto)
         {
-            var vehicleModel = _mapper.Map<VehicleModel>(modelDto);
+            if (id != modelDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var vehicleModel = await _vehicleModelService.GetAsync(id);
+            if (vehicleModel == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(modelDto, vehicleModel);
+
             await _vehicleModelService.UpdateAsync(vehicleModel);
 
-            return Ok(vehicleModel);
+            return NoContent();
         }
 
         // POST: api/VehicleModels

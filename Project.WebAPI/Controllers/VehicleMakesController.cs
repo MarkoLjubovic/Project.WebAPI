@@ -53,12 +53,24 @@ namespace Project.WebAPI.Controllers
         // PUT: api/VehicleMakes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicleMake(UpdateMakeDto updateMakeDto)
+        public async Task<IActionResult> PutVehicleMake(int id, UpdateMakeDto updateMakeDto)
         {
-            var vehicleMake = _mapper.Map<VehicleMake>(updateMakeDto);
+            if (id != updateMakeDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var vehicleMake = await _vehicleMakeService.GetAsync(id);
+            if (vehicleMake == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateMakeDto,vehicleMake);
+
             await _vehicleMakeService.UpdateAsync(vehicleMake);
 
-            return Ok(vehicleMake);
+            return NoContent();
         }
 
         // POST: api/VehicleMakes

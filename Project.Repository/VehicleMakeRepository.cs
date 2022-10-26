@@ -37,6 +37,7 @@ namespace Project.Repository
             return await _context.Set<VehicleMake>().ToListAsync();
         }
 
+
         public async Task<VehicleMake> GetAsync(int? id)
         {
             return await _context.Set<VehicleMake>().FindAsync(id);
