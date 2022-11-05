@@ -1,4 +1,6 @@
-﻿using Project.Models;
+﻿using Project.Common.Interfaces;
+using Project.Models;
+using Project.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,6 @@ namespace Project.Service.Common
         Task DeleteAsync(int id);
         Task<VehicleMake> UpdateAsync(VehicleMake entity);
         Task<VehicleMake> GetDetails(int id);
+        Task<IPage<VehicleMake>> GetPagingVehicleMake(IPageInfo pageInfo);
     }
 }

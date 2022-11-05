@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project.Common;
 using Project.DAL;
 using Project.Models;
+using Project.Models.Interfaces;
 using Project.Repository.Common;
+using Project.Service;
 using Project.Service.Common;
 using Project.WebAPI.ProjectDtos.VehicleMake;
 using System.Diagnostics.Metrics;
@@ -97,6 +100,16 @@ namespace Project.WebAPI.Controllers
             await _vehicleMakeService.DeleteAsync(id);
 
             return NoContent();
+        }
+
+        [HttpPost("Paging")]
+        public async Task<ActionResult> GetPagingVehicleMake([FromBody] PageInfo pageInfo)
+        {
+            var vehicles = await _vehicleMakeService.GetPagingVehicleMake(pageInfo);
+
+            var make = _mapper.Map<PageVehicleMake>((Page<VehicleMake>)vehicles);
+
+            return Ok(make);
         }
     }
 }
